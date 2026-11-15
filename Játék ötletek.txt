@@ -1,0 +1,14 @@
+Játék ötletek
+karakterek:
+3 karakter (give or take)
+cowboy (100%) - revolverrel kezd, 6 tölténnyel, 1-esével lő mondjuk minden másodpercenként, alternative fire az egy puska lövés ami átmegy az ellenségeken és sokat sebez (ötlet), másik alt fire ötlet: homok gránát (mint erron blacknek) ami egy körben sebez ahova dobod, másik alt fire ötlet: deadeye, megnyomod és pl kiüríti az ammot és autoaimol enemykre
+
+samurai (100%) - karddal kezd, 2 ütéssel kezd, közelre üt de több enemyt is megtud ütni egyszerre, alternative fire az omnislash (a.k.a. judgement cut end) ami egy villanás után az összes ellenséget megsebzi, másik alt fire ötlet: lunge dash szerű ütés ami igazából egy dodge de üt is
+
+bandit/outlaw (ötlet) - shotgunnal kezd, 4 tölténnyel, 5-öt lő minden gombnyomásra, lassan lő, alternative fire egy dobókés ami bleed effectet rak az enemyre (DoT, mondjuk 10 damage másodpercenként 5 másodpercre), másik alt fire ötlet: retreating knife storm, vagy valami, ami hátra dashel és kilő mondjuk 10 lövést ahova nézel mint a shotgun
+
+fejlesztések:
+szétlehetne osztani karakter/hős, fegyver, alternative fire fejlesztéseknek, pl.:
+hős fejlesztés: max hp, armor, hp regen
+fegyver: sebzés, tüzelés sebesség, ujratöltés sebesség, max ammo
+alt fire: cooldown time, sebzés, lifesteal on hit/kill (?)
