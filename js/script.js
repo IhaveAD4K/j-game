@@ -1,17 +1,82 @@
 var canvas = document.querySelector("#gameCanvas");
 var startButton = document.querySelector(".start");
+var gameObjects = document.querySelector(".gameObjects");
 
-startButton.addEventListener("click", function() {
+var player = null;
+var gameInterval = null;
 
-    var karakter = document.querySelector(
-        'input[name="character"]:checked'
-    ).value;
+var keys = {
+    w: false,
+    a: false,
+    s: false,
+    d: false
+};
 
-    if (karakter == "cowboy") {
-        canvas.style.backgroundImage = "url('kepek/cowboy_map.png')";
+var palyak = {
+    soldier: "kepek/cowboy_map.png",
+    samurai: "kepek/samurai_map.png",
+    cowboy: "kepek/cowboy_map.png"
+};
+
+function playerMove(){
+    if(keys.w){
+        player.setY(player.getY() - player.getSpeed());
     }
-    else if (karakter == "samurai") {
-        canvas.style.backgroundImage = "url('kepek/samurai_map.png')";
+    if(keys.s){
+        player.setY(player.getY() + player.getSpeed());
     }
+    if(keys.a){
+        player.setX(player.getX() - player.getSpeed());
+    }
+    if(keys.d){
+        player.setX(player.getX() + player.getSpeed());
+    }
+    if(player.getX() < 0){
+        player.setX(0);
+    }
+    if(player.getY() < 0){
+        player.setY(0);
+    }
+    if(player.getX() > 970){
+        player.setX(970);
+    }
+    if(player.getY() > 730){
+        player.setY(730);
+    }
+    player.updatePosition();
+}
 
+document.addEventListener("keydown", function(event){
+    var key = event.key.toLowerCase();
+    if(key == "w" || key == "a" || key == "s" || key == "d"){
+        keys[key] = true;
+    }
+});
+
+document.addEventListener("keyup", function(event){
+    var key = event.key.toLowerCase();
+    if(key == "w" || key == "a" || key == "s" || key == "d"){
+        keys[key] = false;
+    }
+});
+
+startButton.addEventListener("click", function(){
+    var karakter = document.querySelector('input[name="character"]:checked').value;
+    if(gameInterval != null){
+        clearInterval(gameInterval);
+    }
+    gameObjects.innerHTML = "";
+    if(karakter == "soldier"){
+        player = new Soldier(gameObjects, 485, 365);
+    }
+    canvas.style.backgroundImage = "url('" + palyak[karakter] + "')";
+    keys.w = false;
+    keys.a = false;
+    keys.s = false;
+    keys.d = false;
+    gameInterval = setInterval(function(){
+        if(player != null){
+            playerMove();
+        }
+    }, 20);
 });
