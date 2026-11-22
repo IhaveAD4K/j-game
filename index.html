@@ -24,6 +24,10 @@
 
     <label class="form-check-label" for="samurai">Samurai</label>
 </div>
+<div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="character" id="soldier" value="soldier">
+    <label class="form-check-label" for="soldier">Soldier</label>
+</div>
 <button class="btn btn-success start" type="button">Start Game</button>
 </div>
         </section>
@@ -68,13 +72,13 @@
 
 </aside>
 
-        <section class="gameArea">
-             <canvas class="gameCanvas" width="1000" height="800"></canvas>
-
-        </section>
+     <section class="gameArea">
+    <canvas id="gameCanvas" width="1000" height="800"></canvas>
+    <div class="gameObjects"></div>
+</section>
     </main>
 
-    <footer><p class="text-center p-3">All rights reserved</p></footer>
+        <footer><p class="text-center p-3">All rights reserved</p></footer>
 
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/Cowboy.js"></script>    
