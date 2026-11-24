@@ -13,7 +13,7 @@ var keys = {
 };
 
 var palyak = {
-    soldier: "kepek/cowboy_map.png",
+    soldier: "kepek/soldier/soldier_map.png",
     samurai: "kepek/samurai_map.png",
     cowboy: "kepek/cowboy_map.png"
 };
