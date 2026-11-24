@@ -14,7 +14,7 @@ class Soldier{
     #altFireDamage;
     #altFireCooldown;
     #isinbox;
-
+    #facing;
     constructor(container, x, y){
         this.#container = container;
         this.#x = x;
@@ -32,8 +32,10 @@ class Soldier{
         this.#isinbox = false;
         this.#element = document.createElement("div");
         this.#element.classList.add("soldier");
+        this.#element.style.backgroundImage = "url('kepek/soldier/soldier0.png')";
         this.#container.appendChild(this.#element);
         this.updatePosition();
+        this.#facing = 1;
     }
     updatePosition(){
         this.#element.style.left = this.#x + "px";
@@ -57,4 +59,16 @@ class Soldier{
     setSpeed(speed){
         this.#speed = speed;
     }
+    setFacing(direction){
+    this.#facing = direction;
+    if(direction == -1){
+        this.#element.style.transform = "scaleX(-1)";
+    }
+    else{
+        this.#element.style.transform = "scaleX(1)";
+    }
+}
+getFacing(){
+    return this.#facing;
+}
 }

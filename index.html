@@ -9,7 +9,6 @@
 </head>
 <body>
     <header> <h1 class="p-4 text-center">Solid stellar doomed duty galactic gear: the first berserker: the pre-sequel 2</h1></header>
-
     <main>
         <section class="p-3">
          <div class="form-check">
@@ -17,11 +16,9 @@
         name="character" id="cowboy" value="cowboy">
     <label class="form-check-label" for="cowboy">Cowboy</label>
 </div>
-
 <div class="form-check">
     <input class="form-check-input" type="radio"
         name="character" id="samurai" value="samurai" checked>
-
     <label class="form-check-label" for="samurai">Samurai</label>
 </div>
 <div class="form-check form-check-inline">
@@ -31,57 +28,45 @@
 <button class="btn btn-success start" type="button">Start Game</button>
 </div>
         </section>
-        
     <aside class="upgrades p-3">
-
     <h2 class="text-center">UPGRADES</h2>
-
     <p class="text-center">Available points: <span>0</span></p>
-
     <div class="upgrade-list">
-
         <div class="upgrade-card">
             <h3>Maximum Health</h3>
             <p>Increase your maximum HP.</p>
             <p>Level: 0 / 5</p>
             <button class="btn btn-success">UPGRADE</button>
         </div>
-
         <div class="upgrade-card">
             <h3>Damage</h3>
             <p>Increase your weapon damage.</p>
             <p>Level: 0 / 5</p>
             <button class="btn btn-success">UPGRADE</button>
         </div>
-
         <div class="upgrade-card">
             <h3>Movement Speed</h3>
             <p>Move faster across the map.</p>
             <p>Level: 0 / 5</p>
             <button class="btn btn-success">UPGRADE</button>
         </div>
-
         <div class="upgrade-card">
             <h3>Fire Rate</h3>
             <p>Shoot more frequently.</p>
             <p>Level: 0 / 5</p>
             <button class="btn btn-success">UPGRADE</button>
         </div>
-
     </div>
-
 </aside>
-
      <section class="gameArea">
     <canvas id="gameCanvas" width="1000" height="800"></canvas>
     <div class="gameObjects"></div>
 </section>
     </main>
-
         <footer><p class="text-center p-3">All rights reserved</p></footer>
-
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/Cowboy.js"></script>    
+    <script src="js/Bullet.js"></script>
     <script src="js/Soldier.js"></script>    
     <script src="js/Outlaw.js"></script>    
     <script src="js/Samurai.js"></script>    
