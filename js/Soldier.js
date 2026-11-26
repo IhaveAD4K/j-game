@@ -71,4 +71,18 @@ class Soldier{
 getFacing(){
     return this.#facing;
 }
+takeDamage(amount){
+    this.#hp -= amount;
+
+    console.log("HP: " + this.#hp);
+
+    if(this.#hp <= 0){
+        this.#hp = 0;
+        console.log("Player died!");
+    }
+}
+
+getHP(){
+    return this.#hp;
+}
 }
