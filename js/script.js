@@ -494,21 +494,21 @@ function fireballMove() {
     }
 }
 
-function checkBulletCollision() {
-    for (var i = bullets.length - 1; i >= 0; i--) {
-        for (var j = enemies.length - 1; j >= 0; j--) {
-            if (
-                bullets[i].getX() >= enemies[j].getX() &&
-                bullets[i].getX() <= enemies[j].getX() + enemies[j].getWidth() &&
-                bullets[i].getY() >= enemies[j].getY() &&
-                bullets[i].getY() <= enemies[j].getY() + enemies[j].getHeight()
-            ) {
+function checkBulletCollision(){
+    for(var i = bullets.length - 1; i >= 0; i--){
+        for(var j = enemies.length - 1; j >= 0; j--){
+            if(
+                bullets[i].getX() + 10 >= enemies[j].getX() &&
+                bullets[i].getX() - 10 <= enemies[j].getX() + enemies[j].getWidth() &&
+                bullets[i].getY() + 5 >= enemies[j].getY() &&
+                bullets[i].getY() - 5 <= enemies[j].getY() + enemies[j].getHeight()
+            ){
                 enemies[j].damage(player.getDamage());
 
                 bullets[i].destroy();
                 bullets.splice(i, 1);
 
-                if (enemies[j].getDead()) {
+                if(enemies[j].getDied()){
                     money += enemies[j].getReward();
                     enemies[j].destroy();
                     enemies.splice(j, 1);
