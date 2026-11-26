@@ -34,7 +34,7 @@ class Soldier {
         this.#isinbox = false;
         this.#element = document.createElement("div");
         this.#element.classList.add("soldier");
-        this.#element.style.backgroundImage = "url('kepek/soldier/soldier0.png')";
+        this.#element.style.backgroundImage = "url('kepek/samurai/samurai_idle.png')";
         this.#container.appendChild(this.#element);
         this.updatePosition();
         this.#facing = 1;
@@ -58,6 +58,12 @@ class Soldier {
     getMaxHP() {
         return this.#maxHP;
     }
+    getHpRegen(){
+        return this.#hpRegen;
+    }
+    getArmor(){
+        return this.#armor;
+    }
     getDamage() {
         return this.#damage;
     }
@@ -72,6 +78,12 @@ class Soldier {
     }
     setDamage(damage) {
         this.#damage = damage;
+    }
+    setHpRegen(hpRegen){
+        this.#hpRegen = hpRegen;
+    }
+    setArmor(armor){
+        this.#armor = armor;
     }
     increaseMaxHP(amount) {
         this.#maxHP += amount;
