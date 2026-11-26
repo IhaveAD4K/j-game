@@ -3,90 +3,70 @@ var startButton = document.querySelector(".start");
 var gameObjects = document.querySelector(".gameObjects");
 var mainMenu = document.querySelector(".mainMenu");
 var gameSection = document.querySelector(".gameSection");
-
 var deathOverlay = document.querySelector(".deathOverlay");
 var pauseOverlay = document.querySelector(".pauseOverlay");
-
 var moneySpan = document.querySelector(".money");
 var waveSpan = document.querySelector(".wave");
 var ammoSpan = document.querySelector(".ammo");
 var healthFill = document.querySelector(".healthFill");
 var healthText = document.querySelector(".healthText");
-
 var upgradeMoney = document.querySelector(".upgradeMoney");
-
 var gameInterval = null;
 var spawnInterval = null;
-
 canvas.width = 1000;
 canvas.height = 800;
-
 var player = null;
 var gameRunning = false;
 var gamePaused = false;
 var gameOver = false;
-
 var keys = {
     w: false,
     a: false,
     s: false,
     d: false
 };
-
 var bullets = [];
 var enemies = [];
 var fireballs = [];
-
 var mouseX = 0;
 var mouseY = 0;
 var mouseDown = false;
-
 var shootCooldown = 0;
 var reloadTimer = 0;
 var reloading = false;
-
 var magazineSize = 25;
 var ammo = magazineSize;
 var shootRate = 100;
 var reloadTime = 1500;
-
 var wave = 0;
 var money = 0;
 var enemiesLeftToSpawn = 0;
-
 var minReward = 3;
 var maxReward = 8;
-
 var nextWaveCooldown = 5000;
 var waveCooldownTimer = 0;
-
 var upgradeLevels = {
     health: 0,
     damage: 0,
     speed: 0,
     fireRate: 0
 };
-
 var maxUpgradeLevel = 5;
-
 canvas.addEventListener("mousemove", function (event) {
     var rect = canvas.getBoundingClientRect();
     mouseX = (event.clientX - rect.left) * (canvas.width / rect.width);
     mouseY = (event.clientY - rect.top) * (canvas.height / rect.height);
 });
-
 canvas.addEventListener("mousedown", function (event) {
     if (event.button == 0 && gameRunning && !gamePaused && !gameOver) {
         mouseDown = true;
     }
 });
-
 window.addEventListener("mouseup", function (event) {
     if (event.button == 0) {
         mouseDown = false;
     }
 });
-
 window.addEventListener("keydown", function (event) {
     if (event.key == "Escape") {
         event.preventDefault();
@@ -100,11 +80,9 @@ window.addEventListener("keydown", function (event) {
         }
         return;
     }
-
     if (!gameRunning || gamePaused || gameOver) {
         return;
     }
-
     if (event.key == "w" || event.key == "W") {
         keys.w = true;
     }
@@ -118,7 +96,6 @@ window.addEventListener("keydown", function (event) {
         keys.d = true;
     }
 });
-
 window.addEventListener("keyup", function (event) {
     if (event.key == "w" || event.key == "W") {
         keys.w = false;
@@ -133,35 +110,27 @@ window.addEventListener("keyup", function (event) {
         keys.d = false;
     }
 });
-
 function updateGameUI() {
     moneySpan.innerHTML = money;
     waveSpan.innerHTML = wave;
     ammoSpan.innerHTML = ammo + " / " + magazineSize;
-
     if (reloading) {
         ammoSpan.innerHTML = "RELOADING";
     }
-
     if (player != null) {
         updateHealthUI();
     }
-
     upgradeMoney.innerHTML = money;
 }
-
 function updateHealthUI() {
     if (player == null) {
         return;
     }
-
     var hp = player.getHP();
     var maxHP = player.getMaxHP();
     var percentage = hp / maxHP * 100;
-
     healthFill.style.width = percentage + "%";
     healthText.innerHTML = hp + " / " + maxHP + " HP";
-
     if (percentage > 60) {
         healthFill.style.backgroundColor = "#20c020";
     }
@@ -172,33 +141,26 @@ function updateHealthUI() {
         healthFill.style.backgroundColor = "#e00000";
     }
 }
-
 function updateUpgradeUI() {
     document.querySelector(".healthLevel").innerHTML = upgradeLevels.health;
     document.querySelector(".damageLevel").innerHTML = upgradeLevels.damage;
     document.querySelector(".speedLevel").innerHTML = upgradeLevels.speed;
     document.querySelector(".fireRateLevel").innerHTML = upgradeLevels.fireRate;
-
     document.querySelector(".healthCost").innerHTML = getUpgradeCost("health");
     document.querySelector(".damageCost").innerHTML = getUpgradeCost("damage");
     document.querySelector(".speedCost").innerHTML = getUpgradeCost("speed");
     document.querySelector(".fireRateCost").innerHTML = getUpgradeCost("fireRate");
-
     updateUpgradeButton("health", ".healthUpgrade");
     updateUpgradeButton("damage", ".damageUpgrade");
     updateUpgradeButton("speed", ".speedUpgrade");
     updateUpgradeButton("fireRate", ".fireRateUpgrade");
-
     upgradeMoney.innerHTML = money;
 }
-
 function getUpgradeCost(type) {
     return 10 * (upgradeLevels[type] + 1);
 }
-
 function updateUpgradeButton(type, selector) {
     var button = document.querySelector(selector);
-
     if (upgradeLevels[type] >= maxUpgradeLevel) {
         button.innerHTML = "MAX LEVEL";
         button.disabled = true;
@@ -207,30 +169,23 @@ function updateUpgradeButton(type, selector) {
         button.innerHTML = "UPGRADE";
         button.disabled = false;
     }
-
     if (money < getUpgradeCost(type)) {
         button.disabled = true;
     }
 }
-
 function buyUpgrade(type) {
     if (!gamePaused || gameOver || player == null) {
         return;
     }
-
     if (upgradeLevels[type] >= maxUpgradeLevel) {
         return;
     }
-
     var cost = getUpgradeCost(type);
-
     if (money < cost) {
         return;
     }
-
     money -= cost;
     upgradeLevels[type]++;
-
     if (type == "health") {
         player.increaseMaxHP(20);
     }
@@ -243,36 +198,28 @@ function buyUpgrade(type) {
     else if (type == "fireRate") {
         shootRate -= 15;
     }
-
     updateGameUI();
     updateUpgradeUI();
 }
-
 document.querySelector(".healthUpgrade").addEventListener("click", function () {
     buyUpgrade("health");
 });
-
 document.querySelector(".damageUpgrade").addEventListener("click", function () {
     buyUpgrade("damage");
 });
-
 document.querySelector(".speedUpgrade").addEventListener("click", function () {
     buyUpgrade("speed");
 });
-
 document.querySelector(".fireRateUpgrade").addEventListener("click", function () {
     buyUpgrade("fireRate");
 });
-
 function playerMove() {
     if (player == null) {
         return;
     }
-
     var x = player.getX();
     var y = player.getY();
     var speed = player.getSpeed();
-
     if (keys.w) {
         y -= speed;
     }
@@ -287,7 +234,6 @@ function playerMove() {
         x += speed;
         player.setFacing(1);
     }
-
     if (x < 0) {
         x = 0;
     }
@@ -300,22 +246,18 @@ function playerMove() {
     if (y > canvas.height - 60) {
         y = canvas.height - 60;
     }
-
     player.setX(x);
     player.setY(y);
     player.updatePosition();
 }
-
 function playerShoot() {
     if (player == null || !mouseDown || reloading || shootCooldown > 0) {
         return;
     }
-
     if (ammo <= 0) {
         startReload();
         return;
     }
-
     var bullet = new Bullet(
         gameObjects,
         player.getX() + 30,
@@ -323,48 +265,38 @@ function playerShoot() {
         mouseX,
         mouseY
     );
-
     bullets.push(bullet);
     ammo--;
     shootCooldown = shootRate;
-
     if (ammo <= 0) {
         startReload();
     }
-
     updateGameUI();
 }
-
 function startReload() {
     if (reloading) {
         return;
     }
-
     reloading = true;
     reloadTimer = reloadTime;
     mouseDown = false;
     updateGameUI();
 }
-
 function reloadUpdate() {
     if (!reloading) {
         return;
     }
-
     reloadTimer -= 20;
-
-    if (reloadTimer <= 0) {
+   if (reloadTimer <= 0) {
         ammo = magazineSize;
         reloading = false;
         reloadTimer = 0;
         updateGameUI();
     }
 }
-
 function bulletMove() {
     for (var i = bullets.length - 1; i >= 0; i--) {
         bullets[i].move();
-
         if (
             bullets[i].getX() < 0 ||
             bullets[i].getX() > canvas.width ||
@@ -376,16 +308,13 @@ function bulletMove() {
         }
     }
 }
-
 function spawnEnemy() {
     if (enemiesLeftToSpawn <= 0) {
         return;
     }
-
     var x;
     var y;
     var side = Math.floor(Math.random() * 4);
-
     if (side == 0) {
         x = Math.random() * canvas.width;
         y = -100;
@@ -402,48 +331,36 @@ function spawnEnemy() {
         x = -100;
         y = Math.random() * canvas.height;
     }
-
     var type;
-
     if (Math.random() < 0.5) {
         type = "rocket";
     }
     else {
         type = "demon";
     }
-
     var reward = Math.floor(Math.random() * (maxReward - minReward + 1)) + minReward;
     var enemy = new Enemy(gameObjects, x, y, type, reward);
-
     enemies.push(enemy);
     enemiesLeftToSpawn--;
 }
-
 function startWave() {
     wave++;
     enemiesLeftToSpawn = wave;
-
     minReward++;
     maxReward += 2;
-
     waveCooldownTimer = 0;
-
     spawnInterval = setInterval(function () {
         spawnEnemy();
-
         if (enemiesLeftToSpawn <= 0) {
             clearInterval(spawnInterval);
             spawnInterval = null;
         }
     }, 1000);
-
     updateGameUI();
 }
-
 function enemyMove() {
     for (var i = 0; i < enemies.length; i++) {
         enemies[i].move(player);
-
         if (player.getX() + 30 > enemies[i].getX() + enemies[i].getWidth() / 2) {
             enemies[i].setFacing(1);
         }
@@ -452,16 +369,13 @@ function enemyMove() {
         }
     }
 }
-
 function enemyShoot() {
     if (player == null) {
         return;
     }
-
     for (var i = 0; i < enemies.length; i++) {
         if (enemies[i].getType() == "demon") {
             enemies[i].updateCooldown();
-
             if (enemies[i].canShoot()) {
                 var fireball = new Fireball(
                     gameObjects,
@@ -470,18 +384,15 @@ function enemyShoot() {
                     player.getX() + 30,
                     player.getY() + 30
                 );
-
                 fireballs.push(fireball);
                 enemies[i].shoot();
             }
         }
     }
 }
-
 function fireballMove() {
     for (var i = fireballs.length - 1; i >= 0; i--) {
         fireballs[i].move();
-
         if (
             fireballs[i].getX() < -50 ||
             fireballs[i].getX() > canvas.width + 50 ||
@@ -493,7 +404,6 @@ function fireballMove() {
         }
     }
 }
-
 function checkBulletCollision(){
     for(var i = bullets.length - 1; i >= 0; i--){
         for(var j = enemies.length - 1; j >= 0; j--){
@@ -504,10 +414,8 @@ function checkBulletCollision(){
                 bullets[i].getY() - 5 <= enemies[j].getY() + enemies[j].getHeight()
             ){
                 enemies[j].damage(player.getDamage());
-
                 bullets[i].destroy();
                 bullets.splice(i, 1);
-
                 if(enemies[j].getDied()){
                     money += enemies[j].getReward();
                     enemies[j].destroy();
@@ -515,18 +423,15 @@ function checkBulletCollision(){
                     updateGameUI();
                     updateUpgradeUI();
                 }
-
                 break;
             }
         }
     }
 }
-
 function checkEnemyCollision() {
     if (player == null) {
         return;
     }
-
     for (var i = enemies.length - 1; i >= 0; i--) {
         if (
             player.getX() < enemies[i].getX() + enemies[i].getWidth() &&
@@ -543,12 +448,10 @@ function checkEnemyCollision() {
         }
     }
 }
-
 function checkFireballCollision() {
     if (player == null) {
         return;
     }
-
     for (var i = fireballs.length - 1; i >= 0; i--) {
         if (
             fireballs[i].getX() < player.getX() + 60 &&
@@ -563,17 +466,14 @@ function checkFireballCollision() {
         }
     }
 }
-
 function checkPlayerDeath() {
     if (player != null && player.getHP() <= 0) {
         endGame();
     }
 }
-
 function checkNextWave() {
     if (enemies.length == 0 && enemiesLeftToSpawn == 0 && spawnInterval == null) {
         waveCooldownTimer += 20;
-
         if (waveCooldownTimer >= nextWaveCooldown) {
             startWave();
         }
@@ -582,18 +482,14 @@ function checkNextWave() {
         waveCooldownTimer = 0;
     }
 }
-
 function gameUpdate() {
     if (!gameRunning || gamePaused || gameOver) {
         return;
     }
-
     playerMove();
-
     if (shootCooldown > 0) {
         shootCooldown -= 20;
     }
-
     playerShoot();
     reloadUpdate();
     bulletMove();
@@ -604,207 +500,153 @@ function gameUpdate() {
     checkEnemyCollision();
     checkFireballCollision();
     checkPlayerDeath();
-
     if (!gameOver) {
         checkNextWave();
     }
 }
-
 function pauseGame() {
     if (!gameRunning || gamePaused || gameOver) {
         return;
     }
-
     gamePaused = true;
     mouseDown = false;
-
     keys.w = false;
     keys.a = false;
     keys.s = false;
     keys.d = false;
-
     if (gameInterval != null) {
         clearInterval(gameInterval);
         gameInterval = null;
     }
-
     if (spawnInterval != null) {
         clearInterval(spawnInterval);
         spawnInterval = null;
     }
-
     pauseOverlay.style.display = "flex";
     updateUpgradeUI();
 }
-
 function resumeGame() {
     if (!gamePaused || gameOver) {
         return;
     }
-
     gamePaused = false;
     pauseOverlay.style.display = "none";
-
     if (enemiesLeftToSpawn > 0) {
         spawnInterval = setInterval(function () {
             spawnEnemy();
-
             if (enemiesLeftToSpawn <= 0) {
                 clearInterval(spawnInterval);
                 spawnInterval = null;
             }
         }, 1000);
     }
-
     gameInterval = setInterval(gameUpdate, 20);
 }
-
 function endGame() {
     if (gameOver) {
         return;
     }
-
     gameOver = true;
     gameRunning = false;
     gamePaused = false;
     mouseDown = false;
-
     keys.w = false;
     keys.a = false;
     keys.s = false;
     keys.d = false;
-
     if (gameInterval != null) {
         clearInterval(gameInterval);
         gameInterval = null;
     }
-
     if (spawnInterval != null) {
         clearInterval(spawnInterval);
         spawnInterval = null;
     }
-
     pauseOverlay.style.display = "none";
     deathOverlay.style.display = "flex";
 }
-
 function resetUpgrades() {
     upgradeLevels.health = 0;
     upgradeLevels.damage = 0;
     upgradeLevels.speed = 0;
     upgradeLevels.fireRate = 0;
-
     shootRate = 100;
 }
-
 function resetGame() {
     if (gameInterval != null) {
         clearInterval(gameInterval);
         gameInterval = null;
     }
-
     if (spawnInterval != null) {
         clearInterval(spawnInterval);
         spawnInterval = null;
     }
-
     bullets = [];
     enemies = [];
     fireballs = [];
-
     gameObjects.innerHTML = "";
-
     player = null;
-
     wave = 0;
     money = 0;
     enemiesLeftToSpawn = 0;
-
     minReward = 3;
     maxReward = 8;
-
     waveCooldownTimer = 0;
-
     shootCooldown = 0;
     reloadTimer = 0;
     reloading = false;
-
     ammo = magazineSize;
     mouseDown = false;
-
     keys.w = false;
     keys.a = false;
     keys.s = false;
     keys.d = false;
-
     resetUpgrades();
-
     gameRunning = false;
     gamePaused = false;
     gameOver = false;
-
     canvas.width = 1000;
     canvas.height = 800;
-
     deathOverlay.style.display = "none";
     pauseOverlay.style.display = "none";
-
     updateGameUI();
     updateUpgradeUI();
 }
-
 function startGame() {
     resetGame();
-
     player = new Soldier(gameObjects, 470, 370);
-
     canvas.style.backgroundImage = "url('kepek/soldier/soldier_map.png')";
-
     mainMenu.style.display = "none";
     gameSection.style.display = "block";
-
     gameRunning = true;
-
     updateGameUI();
     updateUpgradeUI();
-
     startWave();
-
     gameInterval = setInterval(gameUpdate, 20);
 }
-
 function returnToMenu() {
     resetGame();
-
     gameSection.style.display = "none";
     mainMenu.style.display = "block";
-
     canvas.style.backgroundImage = "";
 }
-
 startButton.addEventListener("click", function () {
     startGame();
 });
-
 document.querySelector(".resumeButton").addEventListener("click", function () {
     resumeGame();
 });
-
 var restartButtons = document.querySelectorAll(".restartButton");
-
 for (var i = 0; i < restartButtons.length; i++) {
     restartButtons[i].addEventListener("click", function () {
         startGame();
     });
 }
-
 var menuButtons = document.querySelectorAll(".menuButton");
-
 for (var i = 0; i < menuButtons.length; i++) {
     menuButtons[i].addEventListener("click", function () {
         returnToMenu();
     });
 }
-
 updateGameUI();
 updateUpgradeUI();
