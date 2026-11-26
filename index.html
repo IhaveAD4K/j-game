@@ -5,81 +5,99 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
-    <title>Document</title>
+    <title>Solid Stellar</title>
 </head>
 <body>
-    <header> <h1 class="p-4 text-center">Solid stellar doomed duty galactic gear: the first berserker: the pre-sequel 2</h1></header>
+    <header>
+        <h1 class="p-4 text-center">Solid stellar doomed duty galactic gear: the first berserker: the pre-sequel 2</h1>
+    </header>
     <main>
-        <section class="p-3">
-         <div class="form-check">
-    <input class="form-check-input" type="radio"
-        name="character" id="cowboy" value="cowboy">
-    <label class="form-check-label" for="cowboy">Cowboy</label>
-</div>
-<div class="form-check">
-    <input class="form-check-input" type="radio"
-        name="character" id="samurai" value="samurai" checked>
-    <label class="form-check-label" for="samurai">Samurai</label>
-</div>
-<div class="form-check form-check-inline">
-    <input class="form-check-input" type="radio" name="character" id="soldier" value="soldier">
-    <label class="form-check-label" for="soldier">Soldier</label>
-</div>
-<button class="btn btn-success start" type="button">Start Game</button>
-</div>
+        <section class="mainMenu p-3">
+            <h2>CHARACTER SELECT</h2>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="character" id="soldier" value="soldier" checked>
+                <label class="form-check-label" for="soldier">Soldier</label>
+            </div>
+            <button class="btn btn-success start" type="button">Start Game</button>
         </section>
-    <aside class="upgrades p-3">
-    <h2 class="text-center">UPGRADES</h2>
-    <p class="text-center">Available points: <span>0</span></p>
-    <div class="upgrade-list">
-        <div class="upgrade-card">
-            <h3>Maximum Health</h3>
-            <p>Increase your maximum HP.</p>
-            <p>Level: 0 / 5</p>
-            <button class="btn btn-success">UPGRADE</button>
+
+        <section class="gameSection">
+            <div class="gameInfo">
+                <div class="moneyDisplay">Money: <span class="money">0</span></div>
+                <div class="waveDisplay">Wave: <span class="wave">0</span></div>
+                <div class="ammoDisplay">Ammo: <span class="ammo">25 / 25</span></div>
+                <div class="healthDisplay">
+                    <div class="healthBar">
+                        <div class="healthFill"></div>
+                    </div>
+                    <span class="healthText">100 / 100 HP</span>
+                </div>
+            </div>
+            <section class="gameArea">
+                <canvas id="gameCanvas" width="1000" height="800"></canvas>
+                <div class="gameObjects"></div>
+            </section>
+        </section>
+    </main>
+
+    <div class="modalOverlay deathOverlay">
+        <div class="gameModal">
+            <h2 class="deathTitle">YOU DIED</h2>
+            <p>You have been eliminated.</p>
+            <button class="btn btn-success restartButton">RESTART</button>
+            <button class="btn btn-secondary menuButton">MAIN MENU</button>
         </div>
-        <div class="upgrade-card">
-            <h3>Damage</h3>
-            <p>Increase your weapon damage.</p>
-            <p>Level: 0 / 5</p>
-            <button class="btn btn-success">UPGRADE</button>
-        </div>
-        <div class="upgrade-card">
-            <h3>Movement Speed</h3>
-            <p>Move faster across the map.</p>
-            <p>Level: 0 / 5</p>
-            <button class="btn btn-success">UPGRADE</button>
-        </div>
-        <div class="upgrade-card">
-            <h3>Fire Rate</h3>
-            <p>Shoot more frequently.</p>
-            <p>Level: 0 / 5</p>
-            <button class="btn btn-success">UPGRADE</button>
-        </div>
-    </div>
-</aside>
-<div class="gameInfo">
-    <div class="moneyDisplay">
-        Money: <span class="money">0</span>
     </div>
 
-    <div class="waveDisplay">
-        Wave: <span class="wave">0</span>
+    <div class="modalOverlay pauseOverlay">
+        <div class="gameModal pauseModal">
+            <h2>PAUSED</h2>
+            <button class="btn btn-success resumeButton">RESUME</button>
+            <h3>UPGRADES</h3>
+            <p>Available points: <span class="upgradeMoney">0</span></p>
+            <div class="upgrade-list">
+                <div class="upgrade-card">
+                    <h3>Maximum Health</h3>
+                    <p>Increase your maximum HP by 20.</p>
+                    <p>Level: <span class="healthLevel">0</span> / 5</p>
+                    <p>Cost: <span class="healthCost">10</span></p>
+                    <button class="btn btn-success healthUpgrade">UPGRADE</button>
+                </div>
+                <div class="upgrade-card">
+                    <h3>Damage</h3>
+                    <p>Increase your weapon damage by 5.</p>
+                    <p>Level: <span class="damageLevel">0</span> / 5</p>
+                    <p>Cost: <span class="damageCost">10</span></p>
+                    <button class="btn btn-success damageUpgrade">UPGRADE</button>
+                </div>
+                <div class="upgrade-card">
+                    <h3>Movement Speed</h3>
+                    <p>Increase your movement speed by 0.5.</p>
+                    <p>Level: <span class="speedLevel">0</span> / 5</p>
+                    <p>Cost: <span class="speedCost">10</span></p>
+                    <button class="btn btn-success speedUpgrade">UPGRADE</button>
+                </div>
+                <div class="upgrade-card">
+                    <h3>Fire Rate</h3>
+                    <p>Shoot 15 ms faster.</p>
+                    <p>Level: <span class="fireRateLevel">0</span> / 5</p>
+                    <p>Cost: <span class="fireRateCost">10</span></p>
+                    <button class="btn btn-success fireRateUpgrade">UPGRADE</button>
+                </div>
+            </div>
+            <button class="btn btn-danger restartButton">RESTART</button>
+            <button class="btn btn-secondary menuButton">MAIN MENU</button>
+        </div>
     </div>
-</div>
-     <section class="gameArea">
-    <canvas id="gameCanvas" width="1000" height="800"></canvas>
-    <div class="gameObjects"></div>
-</section>
-    </main>
-        <footer><p class="text-center p-3">All rights reserved</p></footer>
+
+    <footer>
+        <p class="text-center p-3">All rights reserved</p>
+    </footer>
+
     <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="js/Cowboy.js"></script>
     <script src="js/Bullet.js"></script>
     <script src="js/Soldier.js"></script>
     <script src="js/Enemy.js"></script>
-    <script src="js/Outlaw.js"></script>
-    <script src="js/Samurai.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html>

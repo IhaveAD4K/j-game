@@ -8,7 +8,7 @@ class Enemy{
     #width;
     #height;
     #type;
-    #dead;
+    #died
     #reward;
     #fireCooldown;
     constructor(container, x, y, type, reward){
@@ -16,7 +16,7 @@ class Enemy{
         this.#x = x;
         this.#y = y;
         this.#type = type;
-        this.#dead = false;
+        this.#died = false;
         this.#reward = reward;
         this.#fireCooldown = 0;
         if(type == "rocket"){
@@ -79,8 +79,8 @@ class Enemy{
     getType(){
         return this.#type;
     }
-    getDead(){
-        return this.#dead;
+    getDied(){
+        return this.#died;
     }
     getReward(){
         return this.#reward;
@@ -109,7 +109,7 @@ class Enemy{
         this.#hp -= amount;
         if(this.#hp <= 0){
             this.#hp = 0;
-            this.#dead = true;
+            this.#died = true;
         }
     }
     updateCooldown(){
@@ -127,6 +127,7 @@ class Enemy{
         this.#element.remove();
     }
 }
+
 class Fireball{
     #x;
     #y;

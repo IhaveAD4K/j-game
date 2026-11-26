@@ -1,5 +1,5 @@
 class Samurai{
-     #x;
+    #x;
     #y;
     #speed;
     #element;
@@ -9,7 +9,7 @@ class Samurai{
     #armor;
     #damage;
     #comboCount;
-    #comboSpeed
+    #comboSpeed;
     #altFireDamage;
     #altFireCooldown;
 }
