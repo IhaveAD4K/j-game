@@ -1,10 +1,11 @@
-class Soldier{
+class Soldier {
     #x;
     #y;
     #speed;
     #element;
     #container;
     #hp;
+    #maxHP;
     #hpRegen;
     #armor;
     #damage;
@@ -15,12 +16,13 @@ class Soldier{
     #altFireCooldown;
     #isinbox;
     #facing;
-    constructor(container, x, y){
+    constructor(container, x, y) {
         this.#container = container;
         this.#x = x;
         this.#y = y;
         this.#speed = 4;
         this.#hp = 100;
+        this.#maxHP = 100;
         this.#hpRegen = 0;
         this.#armor = 0;
         this.#damage = 20;
@@ -37,55 +39,60 @@ class Soldier{
         this.updatePosition();
         this.#facing = 1;
     }
-    updatePosition(){
+    updatePosition() {
         this.#element.style.left = this.#x + "px";
         this.#element.style.top = this.#y + "px";
     }
-    getX(){
+    getX() {
         return this.#x;
     }
-    getY(){
+    getY() {
         return this.#y;
     }
-    getSpeed(){
+    getSpeed() {
         return this.#speed;
     }
-    setX(x){
+    getHP() {
+        return this.#hp;
+    }
+    getMaxHP() {
+        return this.#maxHP;
+    }
+    getDamage() {
+        return this.#damage;
+    }
+    setX(x) {
         this.#x = x;
     }
-    setY(y){
+    setY(y) {
         this.#y = y;
     }
-    setSpeed(speed){
+    setSpeed(speed) {
         this.#speed = speed;
     }
-    setFacing(direction){
-    this.#facing = direction;
-    if(direction == -1){
-        this.#element.style.transform = "scaleX(-1)";
+    setDamage(damage) {
+        this.#damage = damage;
     }
-    else{
-        this.#element.style.transform = "scaleX(1)";
+    increaseMaxHP(amount) {
+        this.#maxHP += amount;
+        this.#hp += amount;
     }
-}
-getFacing(){
-    return this.#facing;
-}
-takeDamage(amount){
-    this.#hp -= amount;
-
-    console.log("HP: " + this.#hp);
-
-    if(this.#hp <= 0){
-        this.#hp = 0;
-        console.log("Player died!");
+    setFacing(direction) {
+        this.#facing = direction;
+        if (direction == -1) {
+            this.#element.style.transform = "scaleX(-1)";
+        }
+        else {
+            this.#element.style.transform = "scaleX(1)";
+        }
     }
-}
-
-getHP(){
-    return this.#hp;
-}
-
-
-
+    getFacing() {
+        return this.#facing;
+    }
+    takeDamage(amount) {
+        this.#hp -= amount;
+        if (this.#hp <= 0) {
+            this.#hp = 0;
+        }
+    }
 }
