@@ -16,6 +16,7 @@ class Soldier {
     #altFireCooldown;
     #isinbox;
     #facing;
+    #shootTimer;
     constructor(container, x, y) {
         this.#container = container;
         this.#x = x;
@@ -28,13 +29,15 @@ class Soldier {
         this.#damage = 20;
         this.#fireRate = 100;
         this.#reloadSpeed = 1500;
-        this.#magSize = 30;
+        this.#magSize = 25;
         this.#altFireDamage = 0;
         this.#altFireCooldown = 0;
         this.#isinbox = false;
         this.#element = document.createElement("div");
         this.#element.classList.add("soldier");
-        this.#element.style.backgroundImage = "url('kepek/samurai/samurai_idle.png')";
+        this.#element.style.backgroundImage = "url('kepek/soldier/soldier_idle.png')";
+        new Image().src = "kepek/soldier/soldier_shoot.png";
+        this.#shootTimer = null;
         this.#container.appendChild(this.#element);
         this.updatePosition();
         this.#facing = 1;
@@ -66,6 +69,28 @@ class Soldier {
     }
     getDamage() {
         return this.#damage;
+    }
+    getFireRate() {
+        return this.#fireRate;
+    }
+    getReloadSpeed() {
+        return this.#reloadSpeed;
+    }
+    getMagSize() {
+        return this.#magSize;
+    }
+    shoot() {
+        if (this.#shootTimer != null) {
+            clearTimeout(this.#shootTimer);
+        }
+        this.#element.style.backgroundImage = "url('kepek/soldier/soldier_shoot.png')";
+        this.#shootTimer = setTimeout(() => {
+            this.#element.style.backgroundImage = "url('kepek/soldier/soldier_idle.png')";
+            this.#shootTimer = null;
+        }, 30);
+    }
+    getBulletSprite() {
+        return "kepek/soldier/bullet.png";
     }
     setX(x) {
         this.#x = x;
@@ -102,9 +127,15 @@ class Soldier {
         return this.#facing;
     }
     takeDamage(amount) {
-        this.#hp -= amount;
+        this.#hp -= Math.max(1, amount - this.#armor);
         if (this.#hp <= 0) {
             this.#hp = 0;
+        }
+    }
+    heal(amount) {
+        this.#hp += amount;
+        if (this.#hp > this.#maxHP) {
+            this.#hp = this.#maxHP;
         }
     }
 }
